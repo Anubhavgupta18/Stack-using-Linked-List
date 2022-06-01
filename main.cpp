@@ -9,7 +9,7 @@ private:
         int item;
         node *next;
     };
-    node *start;
+    node *top;
 public:
     Stack();
     bool isEmpty();
@@ -19,29 +19,25 @@ public:
 };
 Stack::Stack()
 {
-    start=NULL;
+    top=NULL;
 }
 bool Stack::isEmpty()
 {
-    return start==NULL;
+    return top==NULL;
 }
 void Stack::push(int data)
 {
     node *n=new node;
     n->item=data;
-    n->next=NULL;
-    if(start==NULL)
+    if(top==NULL)
     {
-        start=n;
+        top=n;
+        n->next=NULL;
     }
     else
     {
-        node *temp=start;
-        while(temp->next!=NULL)
-        {
-            temp=temp->next;
-        }
-        temp->next=n;
+        n->next=top;
+        top=n;
     }
 }
 void Stack::pop()
@@ -52,20 +48,16 @@ void Stack::pop()
     }
     else
     {
-        node *temp=start;
+        node *temp=top;
         if(temp->next==NULL)
         {
-            start=NULL;
+            top=NULL;
             delete temp;
         }
         else
         {
-            while(temp->next->next!=NULL)
-            {
-                temp=temp->next;
-            }
-            delete temp->next;
-            temp->next=NULL;
+            top=top->next;
+            delete temp;
         }
     }
 }
@@ -73,11 +65,6 @@ int Stack::peek()
 {
     if(!isEmpty())
     {
-        node *temp=start;
-        while(temp->next!=NULL)
-        {
-            temp=temp->next;
-        }
-        return temp->item;
+        return top->item;
     }
 }
